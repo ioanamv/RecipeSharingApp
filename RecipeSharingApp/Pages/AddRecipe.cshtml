@@ -1,0 +1,58 @@
+﻿@page
+@model RecipeSharingApp.Pages.AddRecipeModel
+@{
+	ViewData["Title"] = "Add a recipe";
+}
+
+<h2>Add Recipe</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="Title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="Title" name="Title" asp-for="Recipe.Title" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="Category" class="form-label">Category</label>
+        <select class="form-select" id="Category" name="Category" asp-for="Recipe.Category" required>
+            <option value="">Select a category</option>
+            @foreach (var category in Model.AvailableCategories)
+            {
+                <option value="@category">@category</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="Ingredients" class="form-label">Ingredients</label>
+        <textarea class="form-control" id="Ingredients" name="Ingredients" asp-for="Recipe.Ingredients" rows="3" required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="Instructions" class="form-label">Instructions</label>
+        <textarea class="form-control" id="Instructions" name="Instructions" asp-for="Recipe.Instructions" rows="5" required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="PrepTime" class="form-label">Preparation Time (minutes)</label>
+        <input type="number" class="form-control" id="PrepTime" name="PrepTime" asp-for="Recipe.PreparationTime" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="Image" class="form-label">Recipe Image</label>
+        <input type="file" class="form-control" id="Image" name="Image" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="Region" class="form-label">Region</label>
+        <select class="form-select" id="Region" name="Region" asp-for="Recipe.Region" required>
+            <option value="">Select a region</option>
+            @foreach (var region in Model.AvailableRegions)
+            {
+                <option value="@region">@region</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Recipe</button>
+</form>

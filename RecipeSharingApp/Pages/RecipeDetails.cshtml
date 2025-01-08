@@ -1,0 +1,72 @@
+﻿@page "{id:int}"
+@model RecipeDetailsModel
+@using RecipeSharingApp.Models
+
+<div class="container mt-5">
+    @if (Model.SelectedRecipe != null)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <img src="@Model.SelectedRecipe.ImageUrl" class="img-fluid rounded" alt="@Model.SelectedRecipe.Title">
+            </div>
+            <div class="col-md-6">
+                <h1>@Model.SelectedRecipe.Title</h1>
+                <p><strong>Category:</strong> @Model.SelectedRecipe.Category</p>
+                <p><strong>Preparation Time:</strong> @Model.SelectedRecipe.PreparationTime minutes</p>
+                <p><strong>Region:</strong> @Model.SelectedRecipe.Region</p>
+                <h4>Ingredients:</h4>
+                <p>@Html.Raw(Model.SelectedRecipe.Ingredients.Replace("\n", "<br />"))</p>
+                <h4>Instructions:</h4>
+                <p>@Model.SelectedRecipe.Instructions</p>
+            </div>
+            <div>
+                <h3>Comments</h3>
+                <div id="comments-section">
+                    @if (HttpContext.Session.GetString("User") != null)
+                    {
+                        <div class="comment-form">
+                            <form method="post" action="/AddComment">
+                                <div class="form-group">
+                                    <textarea name="comment" class="form-control" rows="3" placeholder="Write a comment..."></textarea>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
+                                </div>
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>You need to be logged in to leave a comment.</p>
+                    }
+
+                    <div class="comments">
+                        <div class="comment">
+                            <div class="comment-author">
+                                <strong>John Doe</strong> <span class="text-muted">- 2 hours ago</span>
+                            </div>
+                            <div class="comment-text">
+                                This recipe is amazing! I made it last weekend, and it was a hit with my family. Highly recommend!
+                            </div>
+                        </div>
+                        <div class="comment">
+                            <div class="comment-author">
+                                <strong>Jane Smith</strong> <span class="text-muted">- 5 hours ago</span>
+                            </div>
+                            <div class="comment-text">
+                                Very easy to make and delicious! The instructions were clear, and the flavor was spot on. I'll definitely make it again.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a class="btn btn-secondary mt-3" asp-page="/Index">Back to Recipes</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            <strong>Error:</strong> Recipe not found.
+        </div>
+    }
+</div>
