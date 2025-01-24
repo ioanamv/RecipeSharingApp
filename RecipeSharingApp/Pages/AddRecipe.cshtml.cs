@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RecipeSharingApp.Data;
@@ -5,6 +6,7 @@ using RecipeSharingApp.Models;
 
 namespace RecipeSharingApp.Pages
 {
+    [Authorize]
     public class AddRecipeModel : PageModel
     {
         [BindProperty]
