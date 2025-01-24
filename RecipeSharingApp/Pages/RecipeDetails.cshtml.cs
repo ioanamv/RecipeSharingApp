@@ -10,7 +10,7 @@ namespace RecipeSharingApp.Pages
         public Recipe? SelectedRecipe { get; set; }
         public IActionResult OnGet(int id)
         {
-            SelectedRecipe=RecipesData.Recipes.FirstOrDefault(x => x.Id == id);
+            //SelectedRecipe=RecipesData.Recipes.FirstOrDefault(x => x.RecipeId == id);
             if (SelectedRecipe == null)
                 return NotFound();
             return Page();

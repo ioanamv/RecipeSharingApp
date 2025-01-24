@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using RecipeSharingApp.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +12,11 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+builder.Services.AddDbContext<AppDbContext>(options=>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(8,2,0))
+        ));
 
 var app = builder.Build();
 
