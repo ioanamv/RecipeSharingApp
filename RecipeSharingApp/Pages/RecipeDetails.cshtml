@@ -40,24 +40,24 @@
                         <p>You need to be logged in to leave a comment.</p>
                     }
 
-                    <div class="comments">
-                        <div class="comment">
-                            <div class="comment-author">
-                                <strong>John Doe</strong> <span class="text-muted">- 2 hours ago</span>
+                    @if (Model.Comments.Any())
+                    {
+                        foreach(var comment in Model.Comments)
+                        {
+                            <div class="comments">
+                                <div class="comment">
+                                    <div class="comment-author">
+                                        <strong>@comment.User.Username</strong> 
+                                        <span class="text-muted">- @comment.Time.ToString("g")</span>
+                                    </div>
+                                    <div class="comment-text">
+                                        @comment.Content
+                                    </div>
+                                </div>
+
                             </div>
-                            <div class="comment-text">
-                                This recipe is amazing! I made it last weekend, and it was a hit with my family. Highly recommend!
-                            </div>
-                        </div>
-                        <div class="comment">
-                            <div class="comment-author">
-                                <strong>Jane Smith</strong> <span class="text-muted">- 5 hours ago</span>
-                            </div>
-                            <div class="comment-text">
-                                Very easy to make and delicious! The instructions were clear, and the flavor was spot on. I'll definitely make it again.
-                            </div>
-                        </div>
-                    </div>
+                        }
+                    }
                 </div>
                 <a class="btn btn-secondary mt-3" asp-page="/Index">Back to Recipes</a>
             </div>
