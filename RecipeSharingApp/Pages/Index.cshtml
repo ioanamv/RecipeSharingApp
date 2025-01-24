@@ -8,7 +8,7 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="my-4">@ViewData["Title"]</h1>
-        @if (HttpContext.Session.GetString("User") != null)
+        @if (User.Identity.IsAuthenticated)
         {
             <div class="d-flex justify-content-end">
                 <a href="/AddRecipe" class="btn btn-primary">Add a Recipe</a>

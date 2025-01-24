@@ -22,7 +22,7 @@
             <div>
                 <h3>Comments</h3>
                 <div id="comments-section">
-                    @if (HttpContext.Session.GetString("User") != null)
+                    @if (User.Identity.IsAuthenticated)
                     {
                         <div class="comment-form">
                             <form method="post" action="/AddComment">
