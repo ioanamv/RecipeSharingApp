@@ -1,3 +1,4 @@
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -5,14 +6,10 @@ namespace RecipeSharingApp.Pages
 {
     public class LogoutModel : PageModel
     {
-        public void OnGet()
+        public async Task<IActionResult> OnPostAsync()
         {
-        }
-
-        public IActionResult OnPost()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToPage("/Index");
+            await HttpContext.SignOutAsync();
+            return RedirectToPage("/Login");
         }
     }
 }

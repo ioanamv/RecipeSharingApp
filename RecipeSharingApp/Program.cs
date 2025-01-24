@@ -1,3 +1,4 @@
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using RecipeSharingApp.Data;
 
@@ -17,6 +18,13 @@ builder.Services.AddDbContext<AppDbContext>(options=>
         builder.Configuration.GetConnectionString("DefaultConnection"),
         new MySqlServerVersion(new Version(8,2,0))
         ));
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login"; 
+        options.LogoutPath = "/Logout";
+    });
 
 var app = builder.Build();
 

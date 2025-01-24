@@ -9,10 +9,10 @@
 		<h1 class="my-4">@ViewData["Title"]</h1>
 		<div class="card">
 			<div class="card-body">
-				@foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-				{
+					@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+					{
 					<div class="alert alert-danger">
-						@error.ErrorMessage
+						@Model.ErrorMessage
 					</div>
 				}
 
@@ -23,6 +23,8 @@
 					<input type="password" id="password" name="password" />
 					<button type="submit">Login</button>
 				</form>
+
+				<p>Don't have an account? <a href="/Register">Register here</a></p>
 			</div>
 		</div>
 	</div>
