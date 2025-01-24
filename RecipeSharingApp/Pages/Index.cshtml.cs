@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using RecipeSharingApp.Data;
 using RecipeSharingApp.Models;
 
@@ -20,32 +21,32 @@ namespace RecipeSharingApp.Pages
         [BindProperty(SupportsGet = true)]
         public string FilterPreparationTimeRange { get; set; }
 
-
         private readonly ILogger<IndexModel> _logger;
+        private readonly AppDbContext _context;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger, AppDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            //Recipes=RecipesData.Recipes;
+            Recipes = await _context.Recipes.ToListAsync();
+            if (!string.IsNullOrEmpty(FilterRegion))
+            {
+                Recipes = Recipes.Where(r => r.Region == FilterRegion).ToList();
+            }
 
-            //if (!string.IsNullOrEmpty(FilterRegion))
-            //{
-            //    Recipes = Recipes.Where(r => r.Region == FilterRegion).ToList();
-            //}
+            if (!string.IsNullOrEmpty(FilterCategory))
+            {
+                Recipes = Recipes.Where(r => r.Category == FilterCategory).ToList();
+            }
 
-            //if (!string.IsNullOrEmpty(FilterCategory))
-            //{
-            //    Recipes = Recipes.Where(r => r.Category == FilterCategory).ToList();
-            //}
-
-            //if (!string.IsNullOrEmpty(FilterPreparationTimeRange))
-            //{
-            //    Recipes = FilterByPreparationTime(Recipes, FilterPreparationTimeRange);
-            //}
+            if (!string.IsNullOrEmpty(FilterPreparationTimeRange))
+            {
+                Recipes = FilterByPreparationTime(Recipes, FilterPreparationTimeRange);
+            }
         }
 
         private List<Recipe> FilterByPreparationTime(List<Recipe> recipes, string range)
