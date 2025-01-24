@@ -12,7 +12,7 @@ using RecipeSharingApp.Data;
 namespace RecipeSharingApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250120122043_InitialMigration")]
+    [Migration("20250124151257_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -42,12 +42,16 @@ namespace RecipeSharingApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Time")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("DATETIME");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("CommentId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("comments");
                 });
@@ -98,6 +102,8 @@ namespace RecipeSharingApp.Migrations
 
                     b.HasKey("RecipeId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("recipes");
                 });
 
@@ -127,6 +133,48 @@ namespace RecipeSharingApp.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("users");
+                });
+
+            modelBuilder.Entity("RecipeSharingApp.Models.Comment", b =>
+                {
+                    b.HasOne("RecipeSharingApp.Models.Recipe", "Recipe")
+                        .WithMany("Comments")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RecipeSharingApp.Models.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipe");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RecipeSharingApp.Models.Recipe", b =>
+                {
+                    b.HasOne("RecipeSharingApp.Models.User", "User")
+                        .WithMany("Recipes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RecipeSharingApp.Models.Recipe", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("RecipeSharingApp.Models.User", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }

@@ -16,20 +16,21 @@ namespace RecipeSharingApp.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "comments",
+                name: "users",
                 columns: table => new
                 {
-                    CommentId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Content = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
+                    Username = table.Column<string>(type: "varchar(45)", maxLength: 45, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    RecipeId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    Time = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    PasswordHash = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Email = table.Column<string>(type: "varchar(45)", maxLength: 45, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_comments", x => x.CommentId);
+                    table.PrimaryKey("PK_users", x => x.UserId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -57,27 +58,59 @@ namespace RecipeSharingApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_recipes", x => x.RecipeId);
+                    table.ForeignKey(
+                        name: "FK_recipes_users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "users",
+                name: "comments",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    CommentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Username = table.Column<string>(type: "varchar(45)", maxLength: 45, nullable: false)
+                    Content = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PasswordHash = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "varchar(45)", maxLength: 45, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    RecipeId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Time = table.Column<DateTime>(type: "DATETIME", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_users", x => x.UserId);
+                    table.PrimaryKey("PK_comments", x => x.CommentId);
+                    table.ForeignKey(
+                        name: "FK_comments_recipes_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "recipes",
+                        principalColumn: "RecipeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_comments_users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_comments_RecipeId",
+                table: "comments",
+                column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_comments_UserId",
+                table: "comments",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_recipes_UserId",
+                table: "recipes",
+                column: "UserId");
         }
 
         /// <inheritdoc />

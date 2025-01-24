@@ -18,6 +18,10 @@ namespace RecipeSharingApp.Models
         [ForeignKey("User")]
         public int UserId { get; set; }
 
+        [Column(TypeName ="DATETIME")]
         public DateTime Time { get; set; }
+
+        public User User { get; set; }
+        public Recipe Recipe { get; set; }
     }
 }

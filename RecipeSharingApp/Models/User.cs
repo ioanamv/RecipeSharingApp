@@ -17,5 +17,8 @@ namespace RecipeSharingApp.Models
 
         [Required, MaxLength(45)]
         public string Email { get; set; }
+
+        public ICollection<Comment> Comments { get; set; }
+        public ICollection<Recipe> Recipes { get; set; }
     }
 }
