@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using RecipeSharingApp.Data;
 using RecipeSharingApp.Models;
+using System.Security.Claims;
 
 namespace RecipeSharingApp.Pages
 {
@@ -30,6 +31,37 @@ namespace RecipeSharingApp.Pages
             if(author != null) AuthorUsername = author.Username;
             Comments =_context.Comments.Where(c=>c.RecipeId == id).Include(c=>c.User).ToList();
             return Page();
+        }
+
+        public IActionResult OnPostAsync(string content, int recipeId)
+        {
+            if (string.IsNullOrEmpty(content))
+            {
+                ModelState.AddModelError(string.Empty, "Comment cannot be empty.");
+                return Page();
+            }
+
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (userId == null)
+                Forbid();
+
+            var newComment = new Comment
+            {
+                Content = content,
+                RecipeId = recipeId,
+                UserId = int.Parse(userId.Value),
+                Time = DateTime.Now
+            };
+
+            _context.Comments.Add(newComment);
+            _context.SaveChanges();
+
+            Comments=_context.Comments
+                .Where(c=>c.RecipeId==recipeId)
+                .Include(c=>c.User)
+                .ToList(); 
+
+            return RedirectToPage(new {id=recipeId});
         }
     }
 }
