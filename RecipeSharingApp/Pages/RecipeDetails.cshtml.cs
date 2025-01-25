@@ -8,8 +8,10 @@ namespace RecipeSharingApp.Pages
 {
     public class RecipeDetailsModel : PageModel
     {
-        public Recipe? SelectedRecipe { get; set; }
+        public Recipe SelectedRecipe { get; set; }
         public List<Comment> Comments { get; set; }
+
+        public string AuthorUsername { get; set; }
 
         private readonly AppDbContext _context;
 
@@ -24,7 +26,9 @@ namespace RecipeSharingApp.Pages
             if (SelectedRecipe == null)
                 return NotFound();
 
-            Comments=_context.Comments.Where(c=>c.RecipeId == id).Include(c=>c.User).ToList();
+            var author = _context.Users.FirstOrDefault(u => u.UserId == SelectedRecipe.UserId);
+            if(author != null) AuthorUsername = author.Username;
+            Comments =_context.Comments.Where(c=>c.RecipeId == id).Include(c=>c.User).ToList();
             return Page();
         }
     }
