@@ -26,11 +26,12 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <div class="comment-form">
-                            <form method="post" action="/AddComment">
+                            <form method="post">
                                 <div class="form-group">
-                                    <textarea name="comment" class="form-control" rows="3" placeholder="Write a comment..."></textarea>
+                                    <textarea name="content" class="form-control" rows="3" placeholder="Write a comment..."></textarea>
                                 </div>
                                 <div class="d-flex justify-content-end">
+                                    <input type="hidden" name="RecipeId" value="@Model.SelectedRecipe.RecipeId"/>
                                     <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
                                 </div>
                             </form>
