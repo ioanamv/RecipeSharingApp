@@ -2,24 +2,35 @@
 @model IndexModel
 @using RecipeSharingApp.Models
 @{
-    ViewData["Title"] = "Recipe list";
+    ViewData["Title"] = "Discover Recipes";
 }
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="my-4">@ViewData["Title"]</h1>
+<head>
+    <style>
+        .recipe-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .recipe-card:hover {
+                transform: scale(1.02);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+    </style>
+</head>
+
+<div class="container py-5">
+    <div class="position-relative">
+        <h1 class="text-lg-center text-dark pb-1 mb-0">@ViewData["Title"]</h1>
         @if (User.Identity.IsAuthenticated)
         {
-            <div class="d-flex justify-content-end">
-                <a href="/AddRecipe" class="btn btn-primary">Add a Recipe</a>
-            </div>
+            <a href="/AddRecipe" class="btn btn-secondary position-absolute end-0 top-50 translate-middle-y">Add recipe</a>
         }
     </div>
+    <hr class="mb-2 mb-md-5 w-50 mx-lg-auto border-secondary">
 
 
-    @*  filter *@
     <form method="get" class="mb-4">
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-md-3">
              <label for="FilterRegion" class="form-label">Region</label>
                 <select id="FilterRegion" name="FilterRegion" class="form-select">
@@ -96,7 +107,7 @@
         </div>
 
         <div class="col-md-3 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                <button type="submit" class="btn btn-primary w-100 mt-3 mt-md-0">Apply Filters</button>
         </div>
     </div>
 </form>
@@ -110,16 +121,24 @@
             @foreach (var recipe in Model.Recipes)
             {
                 <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
+                    <div class="card mb-4 shadow-sm recipe-card">
                         <img src="@recipe.ImageUrl" class="card-img-top" alt="@recipe.Title">
-                        <div class="card-body">
-                            <h5 class="card-title">@recipe.Title</h5>
-                            <p class="card-text">
-                                <strong>Category:</strong> @recipe.Category <br>
-                                <strong>Region:</strong> @recipe.Region <br>
-                                <strong>Preparation Time:</strong> @recipe.PreparationTime minutes
-                            </p>
-                            <a class="btn btn-primary" asp-page="/RecipeDetails" asp-route-id="@recipe.RecipeId">View recipe</a>
+                        <div class="card-body row">
+                            <div class="col-10">
+                                <h2 class="card-title fs-5 text-dark">@recipe.Title</h2>
+                                <div class="card-text text-muted">
+                                    <p class="fs-6 mb-1"><span class="fw-bold">Category:</span> @recipe.Category</p>
+                                    <p class="fs-6 mb-1"><span class="fw-bold">Region:</span> @recipe.Region</p>
+                                    <p class="fs-6 mb-1"><span class="fw-bold">Preparation Time:</span> @recipe.PreparationTime minutes</p>
+                                </div>
+                            </div>
+                            <div class="col-2 d-flex justify-content-end align-items-center">
+                                <a class="btn d-flex justify-content-center align-items-center btn-outline-primary stretched-link p-0 h-100 w-75" asp-page="/RecipeDetails" asp-route-id="@recipe.RecipeId">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -127,7 +146,7 @@
         }
         else
         {
-            <p>No recipes found matching your filters.</p>
+            <p class="text-center text-muted">No recipes found matching your filters.</p>
         }
     </div>
 </div>
