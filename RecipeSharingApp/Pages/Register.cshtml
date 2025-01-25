@@ -4,34 +4,49 @@
     ViewData["Title"] = "Register";
 }
 
-<h2>Register</h2>
+<body>
+    <div class="container d-flex justify-content-center align-items-center mt-4">
+        <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%; border-radius: 15px;">
+            <h2 class="text-center mb-4 text-primary">Register</h2>
+            
+            @foreach (var error in ModelState.Values.SelectMany(v => v.Errors).Take(2))
+            {
+                <div class="alert alert-danger text-center">
+                    <p class="mb-0">@error.ErrorMessage</p>
+                </div>
+            }
 
-@foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-{
-    <p style="color:red">@error.ErrorMessage</p>
-}
+            @if (Model.Success)
+            {
+                <div class="alert alert-success text-center">
+                    <p class="mb-1">Account created successfully!</p> 
+                    <p class="mb-0">You can now <a href="/Login" class="text-decoration-none">log in</a>.</p>
+                </div>
+            }
 
-@if (!string.IsNullOrEmpty(Model.SuccessMessage))
-{
-    <p style="color:green">@Model.SuccessMessage</p>
-}
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" asp-for="Username" class="form-control" placeholder="Enter your username" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" asp-for="Email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" asp-for="Password" class="form-control" placeholder="Enter your password" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Confirm your password" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg mt-2" >Register</button>
+                </div>
+            </form>
 
-<form method="post">
-    <div>
-        <label>Username</label>
-        <input type="name" asp-for="Username" required />
+            <p class="text-center mt-3">Already have an account? <a href="/Login" class="text-decoration-none">Login here</a></p>
+        </div>
     </div>
-    <div>
-        <label>Email</label>
-        <input type="email" asp-for="Email" required />
-    </div>
-    <div>
-        <label>Password</label>
-        <input type="password" asp-for="Password" required />
-    </div>
-    <div>
-        <label>Confirm Password</label>
-        <input type="password" asp-for="ConfirmPassword" required />
-    </div>
-    <button type="submit">Register</button>
-</form>
+</body>

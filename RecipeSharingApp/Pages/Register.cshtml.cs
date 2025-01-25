@@ -38,10 +38,11 @@ namespace RecipeSharingApp.Pages
         public string ConfirmPassword { get; set; }
 
         public string ErrorMessage { get; set; }
-        public string SuccessMessage { get; set; }
+        public bool Success{ get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            Success = false;
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -65,7 +66,7 @@ namespace RecipeSharingApp.Pages
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            SuccessMessage = "Account created successfully. You can now log in.";
+            Success = true;
             return Page();
         }
     }
