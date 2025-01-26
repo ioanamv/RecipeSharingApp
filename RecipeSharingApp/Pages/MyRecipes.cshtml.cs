@@ -11,6 +11,9 @@ namespace RecipeSharingApp.Pages
     [Authorize]
     public class MyRecipesModel : PageModel
     {
+        [BindProperty]
+        public int RecipeIdSelected { get; set; }
+
         public List<Recipe> Recipes { get; set; }
 
         private readonly AppDbContext _context;
@@ -33,6 +36,18 @@ namespace RecipeSharingApp.Pages
             Recipes = await _context.Recipes
                 .Where(r=>r.UserId == int.Parse(userId.Value))
                 .ToListAsync();
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync()
+        {
+            var recipe = _context.Recipes.FirstOrDefault(r => r.RecipeId == RecipeIdSelected);
+            if (recipe == null)
+                return NotFound();
+
+            _context.Recipes.Remove(recipe);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage();
         }
     }
 }

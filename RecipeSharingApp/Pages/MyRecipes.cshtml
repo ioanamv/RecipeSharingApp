@@ -24,7 +24,7 @@
     <hr class="mb-2 mb-md-5 w-50 mx-lg-auto border-secondary">
 
     @*  recipes *@
-    <div class="row">
+    <div class="row" id="recipes-container">
         @if (Model.Recipes != null && Model.Recipes.Any())
         {
             @foreach (var recipe in Model.Recipes)
@@ -42,7 +42,27 @@
                                 </div>
                             </div>
                             <div class="col-2 d-flex justify-content-end align-items-center">
-                                <a class="btn d-flex justify-content-center align-items-center btn-outline-primary stretched-link p-0 h-100 w-75" asp-page="/RecipeDetails" asp-route-id="@recipe.RecipeId">
+                                @* edit button *@
+                                <a class="btn mb-2 d-flex justify-content-center align-items-center w-100 text-white"
+                                    asp-page="/EditRecipe" asp-route-id="@recipe.RecipeId" title="Edit"
+                                    style="background-color: #007bff;" asp-page="/EditRecipe" asp-route-id="@recipe.RecipeId" title="Edit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-9.439 9.439-3.111.778a.25.25 0 0 1-.316-.316l.778-3.111 9.439-9.439zM11.207 2.5 3 10.707V13h2.293L13.5 4.793 11.207 2.5zM12 1.793 13.207 3 14 2.207 12.793 1 12 1.793z" />
+                                    </svg>
+                                </a>
+
+                                <form method="post" asp-page-handler="Delete" class="w-100">
+                                    <input type="hidden" name="RecipeIdSelected" value="@recipe.RecipeId" />
+                                    <button type="submit" class="btn d-flex justify-content-center align-items-center w-100 text-white"
+                                            style="background-color: #dc3545;" title="Delete">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 5h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5v-7zM4.118 4a1 1 0 0 1 .89-.5h6a1 1 0 0 1 .89.5H15a.5.5 0 0 1 0 1h-1v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5H1a.5.5 0 0 1 0-1h3.118zM2.5 5v9a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5h-10z" />
+                                            <path d="M5.5 4a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5V5H5V4z" />
+                                        </svg>
+                                    </button>
+                                </form>
+
+                                <a class="btn d-flex justify-content-center align-items-center btn-outline-primary p-0 h-100 w-75" asp-page="/RecipeDetails" asp-route-id="@recipe.RecipeId">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
                                     </svg>
@@ -58,3 +78,13 @@
             <p class="text-center text-muted">No recipes added yet.</p>
         }
 </div>
+
+<script>
+    const deleteform = document.querySelector("#recipes-container");
+    console.log(deleteform);
+    deleteform.addEventListener("submit", (event) => {
+        const confirmed = window.confirm("Are you sure?");
+        if (!confirmed)
+            event.preventDefault();
+    })
+</script>
