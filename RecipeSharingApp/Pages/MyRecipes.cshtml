@@ -37,7 +37,7 @@
                     <div class="card mb-4 shadow-sm recipe-card">
                         <img src="@recipe.ImageUrl" class="card-img-top" alt="@recipe.Title">
                         <div class="card-body row">
-                            <div class="col-10">
+                            <div class="col-8">
                                 <h2 class="card-title fs-5 text-dark">@recipe.Title</h2>
                                 <div class="card-text text-muted">
                                     <p class="fs-6 mb-1"><span class="fw-bold">Category:</span> @recipe.Category</p>
@@ -45,28 +45,28 @@
                                     <p class="fs-6 mb-1"><span class="fw-bold">Preparation Time:</span> @recipe.PreparationTime minutes</p>
                                 </div>
                             </div>
-                            <div class="col-2 d-flex justify-content-end align-items-center">
-                                @* edit button *@
-                                <a class="btn mb-2 d-flex justify-content-center align-items-center w-100 text-white"
-                                    asp-page="/EditRecipe" asp-route-id="@recipe.RecipeId" title="Edit"
-                                    style="background-color: #007bff;" asp-page="/EditRecipe" asp-route-id="@recipe.RecipeId" title="Edit">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                        <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-9.439 9.439-3.111.778a.25.25 0 0 1-.316-.316l.778-3.111 9.439-9.439zM11.207 2.5 3 10.707V13h2.293L13.5 4.793 11.207 2.5zM12 1.793 13.207 3 14 2.207 12.793 1 12 1.793z" />
-                                    </svg>
-                                </a>
-
-                                <form method="post" asp-page-handler="Delete" class="w-100">
-                                    <input type="hidden" name="RecipeIdSelected" value="@recipe.RecipeId" />
-                                    <button type="submit" class="btn d-flex justify-content-center align-items-center w-100 text-white"
-                                            style="background-color: #dc3545;" title="Delete">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                            <path d="M5.5 5.5A.5.5 0 0 1 6 5h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5v-7zM4.118 4a1 1 0 0 1 .89-.5h6a1 1 0 0 1 .89.5H15a.5.5 0 0 1 0 1h-1v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5H1a.5.5 0 0 1 0-1h3.118zM2.5 5v9a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5h-10z" />
-                                            <path d="M5.5 4a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5V5H5V4z" />
+                            <div class="col-4 d-flex justify-content-end gap-2">
+                                <div class="d-flex flex-column justify-content-around">
+                                    <a class="btn btn-outline-warning d-flex justify-content-center align-items-center m-0 p-2" style="max-width:max-content;"
+                                       asp-page="/EditRecipe" asp-route-id="@recipe.RecipeId" title="Edit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+                                            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0" />
+                                            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z" />
                                         </svg>
-                                    </button>
-                                </form>
+                                    </a>
 
-                                <a class="btn d-flex justify-content-center align-items-center btn-outline-primary p-0 h-100 w-75" asp-page="/RecipeDetails" asp-route-id="@recipe.RecipeId">
+                                    <form method="post" asp-page-handler="Delete" style="max-width:max-content;">
+                                        <input type="hidden" name="RecipeIdSelected" value="@recipe.RecipeId" />
+                                        <button type="submit" class="btn m-0 p-2 btn-outline-danger d-flex justify-content-center align-items-center" title="Delete">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <a class="btn d-flex justify-content-center align-items-center btn-outline-primary px-2 h-100" asp-page="/RecipeDetails" asp-route-id="@recipe.RecipeId">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
                                     </svg>
