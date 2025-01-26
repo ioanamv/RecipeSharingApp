@@ -6,62 +6,98 @@
     @if (Model.SelectedRecipe != null)
     {
         <div class="row">
-            <div class="col-md-6">
-                <img src="@Model.SelectedRecipe.ImageUrl" class="img-fluid rounded" alt="@Model.SelectedRecipe.Title">
+            <div class="col-md-6 position-relative">
+                <a class="btn btn-secondary position-absolute start-0 top-0 ms-4 mt-2" href='javascript:history.go(-1)'>Back</a>
+                <img src="@Model.SelectedRecipe.ImageUrl" class="rounded w-100 h-100" style="object-fit:cover;" alt="@Model.SelectedRecipe.Title">
             </div>
-            <div class="col-md-6">
-                <h1>@Model.SelectedRecipe.Title</h1>
-                <p>by @Model.AuthorUsername</p>
-                <p><strong>Category:</strong> @Model.SelectedRecipe.Category</p>
-                <p><strong>Preparation Time:</strong> @Model.SelectedRecipe.PreparationTime minutes</p>
-                <p><strong>Region:</strong> @Model.SelectedRecipe.Region</p>
-                <h4>Ingredients:</h4>
-                <p>@Html.Raw(Model.SelectedRecipe.Ingredients.Replace("\n", "<br />"))</p>
-                <h4>Instructions:</h4>
-                <p>@Model.SelectedRecipe.Instructions</p>
-            </div>
-            <div>
-                <h3>Comments</h3>
-                <div id="comments-section">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <div class="comment-form">
-                            <form method="post">
-                                <div class="form-group">
-                                    <textarea name="content" class="form-control" rows="3" placeholder="Write a comment..."></textarea>
-                                </div>
-                                <div class="d-flex justify-content-end">
-                                    <input type="hidden" name="RecipeId" value="@Model.SelectedRecipe.RecipeId"/>
-                                    <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
-                                </div>
-                            </form>
-                        </div>
-                    }
-                    else
-                    {
-                        <p>You need to be logged in to leave a comment.</p>
-                    }
+            <div class="col-md-6 ps-3">
+                <h1 class="text-dark fs-3 mt-2 mt-md-0">@Model.SelectedRecipe.Title</h1>
+                <div class="d-flex gap-1 align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                    </svg>
+                    <p class="m-0">by @Model.AuthorUsername</p>
+                </div>
+                <hr class="mb-2 w-50 border-secondary">
+                <div>
+                    <p class="fs-6 mb-1"><span class="fw-bold">Category:</span> @Model.SelectedRecipe.Category</p>
+                    <p class="fs-6 mb-1"><span class="fw-bold">Region:</span> @Model.SelectedRecipe.Region</p>
+                    <p class="fs-6 mb-1"><span class="fw-bold">Preparation Time:</span> @Model.SelectedRecipe.PreparationTime minutes</p>
+                </div>
+                <hr class="mb-2 w-50 border-secondary">
 
-                    @if (Model.Comments.Any())
+                <h2 class="text-dark fs-4 mt-2">Ingredients:</h2>
+                <div class="list-group fs-6">
+                    @foreach(string ingredient in Model.SelectedRecipe.Ingredients.Split("\n"))
                     {
-                        foreach(var comment in Model.Comments)
-                        {
-                            <div class="comments">
-                                <div class="comment">
-                                    <div class="comment-author">
-                                        <strong>@comment.User.Username</strong> 
-                                        <span class="text-muted">- @comment.Time.ToString("g")</span>
-                                    </div>
-                                    <div class="comment-text">
-                                        @comment.Content
-                                    </div>
-                                </div>
-
-                            </div>
-                        }
+                        <label class="list-group-item border-0">
+                            <input class="form-check-input me-1" type="checkbox" value="">
+                            @ingredient
+                        </label>
                     }
                 </div>
-                <a class="btn btn-secondary mt-3" asp-page="/Index">Back to Recipes</a>
+            </div>
+        </div>
+        <hr class="mb-2 w-50 d-md-none border-secondary">
+
+        <div class="w-50">
+            <h2 class="text-dark fs-4 mt-2 mt-md-4">Instructions:</h2>
+            @{
+                var instructions = @Model.SelectedRecipe.Instructions;
+
+                var instructionsList = instructions.Contains('\n')
+                ? instructions.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                : instructions.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+            <ol>
+                @foreach (var instruction in instructionsList)
+                {
+                    <li class="mb-1 fs-6">@instruction.Trim()</li>
+                }
+            </ol>
+
+            <hr class="mb-3 mt-3 w-100 border-secondary">
+            <h2 class="text-dark fs-4 mt-2">Comments:</h2>
+            <div id="comments-section fs-6">
+                @if (Model.Comments.Any())
+                {
+                    foreach(var comment in Model.Comments)
+                    {
+                        <ul class="list-group mb-2">
+                            <li class="list-group-item rounded">
+                                <div class="comment-author">
+                                    <strong>@comment.User.Username</strong> 
+                                    <span class="text-muted">- @comment.Time.ToString("g")</span>
+                                </div>
+                                <div class="comment-text">
+                                    @comment.Content
+                                </div>
+                            </li>
+                        </ul>
+                    }
+                }
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="comment-form">
+                        <form method="post">
+                            <div class="form-group">
+                                <textarea name="content" class="form-control" rows="3" placeholder="Write a comment..."></textarea>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <input type="hidden" name="RecipeId" value="@Model.SelectedRecipe.RecipeId" />
+                                <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
+                            </div>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info" role="alert">
+                        <a href="/Login" class="text-decoration-none">Login here</a> to leave a comment.
+                    </div>
+                }
             </div>
         </div>
     }
