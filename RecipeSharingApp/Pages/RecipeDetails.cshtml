@@ -2,6 +2,15 @@
 @model RecipeDetailsModel
 @using RecipeSharingApp.Models
 
+<style>
+    @@media(min-width: 768px){
+        #instruction-comments {
+            width: 50% !important;
+        }
+    }
+
+</style>
+
 <div class="container mt-5">
     @if (Model.SelectedRecipe != null)
     {
@@ -41,7 +50,7 @@
         </div>
         <hr class="mb-2 w-50 d-md-none border-secondary">
 
-        <div class="w-50">
+        <div class="w-100" id="instruction-comments">
             <h2 class="text-dark fs-4 mt-2 mt-md-4">Instructions:</h2>
             @{
                 var instructions = @Model.SelectedRecipe.Instructions;

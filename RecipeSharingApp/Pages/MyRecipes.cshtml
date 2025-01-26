@@ -20,6 +20,10 @@
 <div class="container py-5">
     <div class="position-relative">
         <h1 class="text-lg-center text-dark pb-1 mb-0">@ViewData["Title"]</h1>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a href="/AddRecipe" class="btn btn-secondary position-absolute end-0 top-50 translate-middle-y">Add recipe</a>
+        }
     </div>
     <hr class="mb-2 mb-md-5 w-50 mx-lg-auto border-secondary">
 
